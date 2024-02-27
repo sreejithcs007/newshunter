@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../model/news_model.dart';
 
 class  HomeScreenController with ChangeNotifier{
@@ -25,6 +26,19 @@ class  HomeScreenController with ChangeNotifier{
     }
     newsModel = NewsDataModel.fromJson(decodedData);
     isLoading = false;
+    notifyListeners();
+  }
+  Future<void> launchURL(String url) async {
+    final Uri url1 = Uri.parse(url);
+    try {
+      if (!await launchUrl(url1,mode: LaunchMode.inAppWebView)) {
+        await launchUrl(url1,mode: LaunchMode.inAppWebView);
+      } else {
+        throw 'Could not launch $url';
+      }
+    } catch (e) {
+      print('Error launching URL: $e');
+    }
     notifyListeners();
   }
 

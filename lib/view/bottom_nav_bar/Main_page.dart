@@ -12,10 +12,10 @@ class MainPage extends StatelessWidget{
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: Provider.of<BottomNavController>(context).selectedIndex,
         selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.black,
+        unselectedItemColor: Colors.blueGrey[900],
         showSelectedLabels: true,
-        showUnselectedLabels: false,
-        backgroundColor: Colors.amber,
+        showUnselectedLabels: true,
+        backgroundColor: Color(0xFFDAFFFB),
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home),label: "Home", ),
           BottomNavigationBarItem(icon: Icon(Icons.category),label: "Category"),

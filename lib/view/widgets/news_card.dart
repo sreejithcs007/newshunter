@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../controller/home_screen-Controler.dart';
+import 'news_view_screen.dart';
 
 class NewsCard extends StatelessWidget {
   const NewsCard(
@@ -25,70 +26,81 @@ class NewsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Container(
-            height: 200,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              image: DecorationImage(
-                  image: NetworkImage(
-                    imageUrl,
+    return Padding(
+      padding: const EdgeInsets.only(top: 10,left: 8.0,right: 8),
+      child: Container(
+        padding: const EdgeInsets.all(25),
+        decoration: BoxDecoration(
+          color: Color(0xFFBBE2EC),
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Color(0xFF436850).withOpacity(0.5),
+              blurRadius: 1,
+              spreadRadius: 3
+            )
+          ]
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              height: 200,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                image: DecorationImage(
+                    image: NetworkImage(
+                      imageUrl,
+                    ),
+                    fit: BoxFit.cover),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NewsViewScreen(
+                        title: title,
+                        description: description,
+                        imageUrl: imageUrl,
+                        date: date,
+                        contant: contant,
+                        sourceName: sourceName,
+                        url: url,
+                      ),
+                    ));
+              },
+              child: Column(
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.w600),
                   ),
-                  fit: BoxFit.cover),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                          "$sourceName | ${DateFormat('dd/MM/yyyy').format(date!).toString() ?? ""}",style: TextStyle(fontWeight: FontWeight.bold),),
+                      IconButton(
+                          onPressed: () {
+                            String newsToShare = "$title \n \n $description \n \n $url";
+                            Provider.of<HomeScreenController>(context,
+                                listen: false)
+                                .shareText(textToShare: newsToShare);
+                          },
+                          icon: const Icon(Icons.share))
+                    ],
+                  )
+                ],
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          InkWell(
-            onTap: () {
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => NewsViewScreen(
-              //         title: title,
-              //         description: description,
-              //         imageUrl: imageUrl,
-              //         date: date,
-              //         contant: contant,
-              //         sourceName: sourceName,
-              //         url: url,
-              //       ),
-              //     ));
-            },
-            child: Column(
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.w600),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                        "$sourceName | ${DateFormat('dd/MM/yyyy').format(date!).toString() ?? ""}"),
-                    IconButton(
-                        onPressed: () {
-                          String newsToShare = "$title \n \n $description \n \n $url";
-                          Provider.of<HomeScreenController>(context,
-                              listen: false)
-                              .shareText(textToShare: newsToShare);
-                        },
-                        icon: const Icon(Icons.share))
-                  ],
-                )
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
